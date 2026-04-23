@@ -4,7 +4,6 @@ services:
   - type: web
     name: careficient-audio
     env: python
-    plan: free
     rootDir: backend
     buildCommand: >
       pip install torch --index-url https://download.pytorch.org/whl/cpu &&
@@ -24,7 +23,6 @@ services:
   - type: web
     name: careficient-ocr
     env: python
-    plan: free
     rootDir: backend
     buildCommand: >
       apt-get install -y tesseract-ocr poppler-utils &&
@@ -38,7 +36,6 @@ services:
   - type: web
     name: careficient-oasis
     env: python
-    plan: free
     rootDir: backend
     buildCommand: pip install -r oasis_prefill/requirements.txt
     startCommand: uvicorn oasis_prefill.app:app --host 0.0.0.0 --port $PORT
@@ -50,7 +47,6 @@ services:
   - type: web
     name: careficient-ui
     env: static
-    plan: free
     rootDir: frontend/review-ui
     buildCommand: npm install && npm run build
     staticPublishPath: build
