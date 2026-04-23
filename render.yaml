@@ -1,0 +1,63 @@
+services:
+
+  # ── Audio Pipeline (Whisper STT + clinical extraction) ────────────────────
+  - type: web
+    name: careficient-audio
+    env: python
+    plan: free
+    rootDir: backend
+    buildCommand: >
+      pip install torch --index-url https://download.pytorch.org/whl/cpu &&
+      pip install -r audio_pipeline/requirements.txt
+    startCommand: uvicorn audio_pipeline.app:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: EXTRACTOR_PROVIDER
+        value: regex
+      - key: WHISPER_MODEL
+        value: tiny
+      - key: DEVICE
+        value: cpu
+      - key: PYTHON_VERSION
+        value: "3.11.0"
+
+  # ── OCR Pipeline (Tesseract + clinical extraction) ────────────────────────
+  - type: web
+    name: careficient-ocr
+    env: python
+    plan: free
+    rootDir: backend
+    buildCommand: >
+      apt-get install -y tesseract-ocr poppler-utils &&
+      pip install -r ocr_pipeline/requirements.txt
+    startCommand: uvicorn ocr_pipeline.app:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.11.0"
+
+  # ── OASIS Prefill (form mapper) ───────────────────────────────────────────
+  - type: web
+    name: careficient-oasis
+    env: python
+    plan: free
+    rootDir: backend
+    buildCommand: pip install -r oasis_prefill/requirements.txt
+    startCommand: uvicorn oasis_prefill.app:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.11.0"
+
+  # ── React Review UI (static site) ─────────────────────────────────────────
+  - type: web
+    name: careficient-ui
+    env: static
+    plan: free
+    rootDir: frontend/review-ui
+    buildCommand: npm install && npm run build
+    staticPublishPath: build
+    envVars:
+      - key: REACT_APP_AUDIO_URL
+        value: https://careficient-audio.onrender.com
+      - key: REACT_APP_OCR_URL
+        value: https://careficient-ocr.onrender.com
+      - key: REACT_APP_OASIS_URL
+        value: https://careficient-oasis.onrender.com

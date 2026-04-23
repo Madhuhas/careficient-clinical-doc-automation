@@ -3,9 +3,9 @@ import axios from 'axios';
 import './App.css';
 
 const API = {
-  audio: 'http://localhost:8000',
-  ocr: 'http://localhost:8001',
-  oasis: 'http://localhost:8003',
+  audio: process.env.REACT_APP_AUDIO_URL || 'http://localhost:8000',
+  ocr:   process.env.REACT_APP_OCR_URL   || 'http://localhost:8001',
+  oasis: process.env.REACT_APP_OASIS_URL || 'http://localhost:8003',
 };
 
 function StatusBadge({ status }) {

@@ -1,27 +1,21 @@
-# Web Framework
+# Web framework
 fastapi==0.104.1
 uvicorn[standard]==0.24.0
 python-multipart==0.0.6
 
-# Audio Processing
+# Speech-to-text
+# torch is installed separately in render.yaml using the CPU-only wheel
+# to keep image size small: pip install torch --index-url https://download.pytorch.org/whl/cpu
 openai-whisper==20231117
-pydub==0.25.1
-ffmpeg-python==0.2.0
-
-# Machine Learning / Audio
-torch==2.1.0
-torchaudio==2.1.0
+imageio-ffmpeg
 numpy==1.24.3
+scipy==1.11.4
 
-# Data Validation
+# Data validation
 pydantic==2.5.0
 pydantic-settings==2.1.0
 
 # Utilities
 python-dotenv==1.0.0
-tenacity==8.2.3
-
-# Development
-pytest==7.4.3
-pytest-asyncio==0.21.1
+requests
 httpx==0.25.2
