@@ -157,6 +157,47 @@ echo "EXTRACTOR_PROVIDER=ollama" >> backend/audio_pipeline/.env
 
 ---
 
+## Quick Test with Sample Files
+
+The `samples/` directory contains ready-to-use test files so you can exercise the full pipeline without recording anything yourself.
+
+| File | Description |
+|---|---|
+| `samples/sample_visit.wav` | Synthesized home health nursing visit — CHF patient with vitals, meds, and assessment |
+| `samples/sample_clinical_note.png` | Scanned clinical note image with the same visit data for OCR testing |
+
+**Test the audio pipeline:**
+
+```bash
+curl -X POST http://localhost:8000/transcribe \
+  -F "audio=@samples/sample_visit.wav"
+```
+
+Expected output includes BP `148/92`, `Lasix 40 mg`, CHF diagnosis (`I50.9`), and a completed OASIS pre-fill.
+
+**Test the OCR pipeline:**
+
+```bash
+curl -X POST http://localhost:8001/ocr \
+  -F "document=@samples/sample_clinical_note.png"
+```
+
+Returns a `document_id`. Then extract clinical data:
+
+```bash
+curl -X POST http://localhost:8001/extract \
+  -H "Content-Type: application/json" \
+  -d '{"document_id": "<id from above>"}'
+```
+
+**Regenerate sample files** (if needed):
+
+```bash
+python samples/generate_samples.py
+```
+
+---
+
 ## Key Design Decisions
 
 **Why three services instead of one?**
@@ -197,6 +238,11 @@ backend/
 
 frontend/
 └── review-ui/              # React clinician review interface
+
+samples/
+├── sample_visit.wav            # Synthesized nursing visit audio (CHF patient)
+├── sample_clinical_note.png    # Scanned clinical note image for OCR testing
+└── generate_samples.py         # Script to regenerate sample files
 ```
 
 ---

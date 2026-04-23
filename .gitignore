@@ -32,8 +32,9 @@ Thumbs.db
 htmlcov/
 .coverage
 
-# Temp audio files
+# Temp audio files (but keep committed samples)
 *.wav
 *.mp3
 *.m4a
+!samples/*.wav
 sample_data/
