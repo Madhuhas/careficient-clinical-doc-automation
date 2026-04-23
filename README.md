@@ -4,6 +4,8 @@ Home health nurses spend 2–3 hours per visit on paperwork. This project cuts t
 
 Built specifically around the Careficient EHR workflow.
 
+![Careficient Clinical Doc Automation UI](docs/ui-screenshot.png)
+
 ---
 
 ## The Problem
