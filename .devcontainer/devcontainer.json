@@ -1,0 +1,34 @@
+{
+  "name": "Careficient Clinical Doc Automation",
+  "image": "mcr.microsoft.com/devcontainers/python:3.11",
+
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": { "version": "20" }
+  },
+
+  "onCreateCommand": "bash .devcontainer/setup.sh",
+
+  "postStartCommand": "bash .devcontainer/start-services.sh",
+
+  "forwardPorts": [3000, 8000, 8001, 8003],
+  "portsAttributes": {
+    "3000": { "label": "Review UI",       "onAutoForward": "openBrowser" },
+    "8000": { "label": "Audio Pipeline",  "onAutoForward": "notify" },
+    "8001": { "label": "OCR Pipeline",    "onAutoForward": "notify" },
+    "8003": { "label": "OASIS Prefill",   "onAutoForward": "notify" }
+  },
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode"
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "/usr/local/bin/python"
+      }
+    }
+  }
+}
